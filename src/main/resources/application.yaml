@@ -1,0 +1,6 @@
+itaojin:
+  zookeeper:
+    quorum: node4,node7,node8
+    port: 2181
+  hbase:
+    master: node3:600000
