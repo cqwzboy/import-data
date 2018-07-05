@@ -6,6 +6,7 @@ import com.qc.itaojin.util.FileUtil;
 import com.qc.itaojin.util.PropertiesUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
@@ -19,7 +20,9 @@ public class ImportStarter {
 
     private static final String PATH = "F://generateSqoopSql.sh";
 
+    @Autowired
     private IAliyunService aliyunService;
+    @Autowired
     private ISqoopShellService sqoopShellService;
 
     public void process(){

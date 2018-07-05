@@ -1,9 +1,11 @@
 package com.qc.itaojin.dao.impls;
 
+import com.qc.itaojin.common.Constants;
 import com.qc.itaojin.dao.ISqoopShellDao;
 import com.qc.itaojin.dao.common.AliyunBaseDao;
 import com.qc.itaojin.enums.KeyType;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * Created by fuqinqin on 2018/6/26.
  */
+@Component
 public class SqoopShellDaoImpl extends AliyunBaseDao implements ISqoopShellDao {
 
     private String connect = "--connect %s%s ";
@@ -25,6 +28,7 @@ public class SqoopShellDaoImpl extends AliyunBaseDao implements ISqoopShellDao {
     private String hbaseTabel = "--hbase-table %s:%s ";
     private String columnFamily = "--column-family %s ";
     private String hbaseRowKey = "--hbase-row-key %s ";
+    private String nullFormat = "--null-string '\\\\N' --null-non-string '\\\\N'";
 
     @Override
     public String generateSqoopShell(String schema, String tableName) {
@@ -65,7 +69,7 @@ public class SqoopShellDaoImpl extends AliyunBaseDao implements ISqoopShellDao {
             shell.append(String.format(password, pros.getProperty("jdbc.password")));
             shell.append(String.format(table, tableName));
             shell.append(deleteTarget);
-            shell.append(String.format(hbaseTabel, schema, tableName));
+            shell.append(String.format(hbaseTabel, buildSchema(schema), tableName));
             shell.append(String.format(columnFamily, "f1"));
 
             String rowKey;
@@ -82,6 +86,7 @@ public class SqoopShellDaoImpl extends AliyunBaseDao implements ISqoopShellDao {
                 rowKey = "";
             }
             shell.append(String.format(hbaseRowKey, rowKey));
+            shell.append(nullFormat);
             shell.append(";");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,5 +95,14 @@ public class SqoopShellDaoImpl extends AliyunBaseDao implements ISqoopShellDao {
         }
 
         return shell.toString();
+    }
+
+    private String buildSchema(String schema){
+        StringBuilder nameSpace = new StringBuilder();
+        nameSpace.append(Constants.SCHEMA)
+                .append("000")
+                .append(schema);
+
+        return nameSpace.toString();
     }
 }

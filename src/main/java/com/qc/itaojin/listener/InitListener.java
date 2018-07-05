@@ -23,7 +23,7 @@ import static com.qc.itaojin.common.GloableShare.DB_INFO;
  * Created by fuqinqin on 2018/7/5.
  */
 @Slf4j
-public class GloableListener implements ApplicationListener<ContextRefreshedEvent> {
+public class InitListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -37,17 +37,27 @@ public class GloableListener implements ApplicationListener<ContextRefreshedEven
         // update HBase Versions
         IHBaseService hBaseService = applicationContext.getBean("ihBaseService", IHBaseService.class);
         if(MapUtils.isNotEmpty(DB_INFO)){
-            out:for(Map.Entry<String, Set<String>> entry : DB_INFO.entrySet()){
-                String schema = entry.getKey();
-                Set<String> tables = entry.getValue();
-                if(CollectionUtils.isEmpty(tables)){
-                    continue out;
-                }
+            // 开启使用单一连接
+            hBaseService.useSingleConn();
+            try{
+                out:for(Map.Entry<String, Set<String>> entry : DB_INFO.entrySet()){
+                    String schema = entry.getKey();
+                    Set<String> tables = entry.getValue();
+                    if(CollectionUtils.isEmpty(tables)){
+                        continue out;
+                    }
 
-                for (String table : tables) {
-                    hBaseService.updateVersions(schema, table, HBaseConstants.DEFAULT_FAMILY, HBaseConstants.DEFAULT_VERSIONS);
-                    log.info("修改 {} 的VERSIONS参数成功！", StringUtils.contact(schema, ":", table));
+                    in:for (String table : tables) {
+                        if("新表".equals(table)){
+                            continue in;
+                        }
+                        hBaseService.updateVersions(schema, table, HBaseConstants.DEFAULT_FAMILY, HBaseConstants.DEFAULT_VERSIONS);
+                        log.info("修改 {} 的VERSIONS参数成功！", StringUtils.contact(schema, ":", table));
+                    }
                 }
+            }finally {
+                // 关闭连接
+                hBaseService.closeSingleConn();
             }
         }
     }
