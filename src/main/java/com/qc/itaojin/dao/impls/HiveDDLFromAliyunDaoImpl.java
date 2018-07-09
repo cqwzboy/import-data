@@ -1,6 +1,5 @@
 package com.qc.itaojin.dao.impls;
 
-import com.qc.itaojin.common.Constants;
 import com.qc.itaojin.common.Constants.HBaseConstants;
 import com.qc.itaojin.dao.IHiveDDLFromAliyunDao;
 import com.qc.itaojin.dao.common.AliyunBaseDao;
@@ -15,6 +14,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.qc.itaojin.ImportDataApplication.SCHEMA;
 import static com.qc.itaojin.enums.MysqlDataType.nameOf;
 import static com.qc.itaojin.enums.MysqlDataType.transToHiveDataType;
 
@@ -129,7 +129,7 @@ public class HiveDDLFromAliyunDaoImpl extends AliyunBaseDao implements IHiveDDLF
 
     private String buildSchema(String schema){
         StringBuilder nameSpace = new StringBuilder();
-        nameSpace.append(Constants.SCHEMA)
+        nameSpace.append(SCHEMA)
                 .append("000")
                 .append(schema);
 

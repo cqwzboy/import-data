@@ -6,11 +6,6 @@ package com.qc.itaojin.common;
 public class Constants {
 
     /**
-     * 物理schema
-     * */
-    public static final String SCHEMA = "tjk";
-
-    /**
      * Hive相关的常量
      * */
     public interface HiveConstants{

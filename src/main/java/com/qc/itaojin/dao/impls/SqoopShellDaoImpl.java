@@ -1,6 +1,5 @@
 package com.qc.itaojin.dao.impls;
 
-import com.qc.itaojin.common.Constants;
 import com.qc.itaojin.dao.ISqoopShellDao;
 import com.qc.itaojin.dao.common.AliyunBaseDao;
 import com.qc.itaojin.enums.KeyType;
@@ -13,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.qc.itaojin.ImportDataApplication.SCHEMA;
 
 /**
  * Created by fuqinqin on 2018/6/26.
@@ -99,7 +100,7 @@ public class SqoopShellDaoImpl extends AliyunBaseDao implements ISqoopShellDao {
 
     private String buildSchema(String schema){
         StringBuilder nameSpace = new StringBuilder();
-        nameSpace.append(Constants.SCHEMA)
+        nameSpace.append(SCHEMA)
                 .append("000")
                 .append(schema);
 

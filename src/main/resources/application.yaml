@@ -1,6 +1,6 @@
 itaojin:
   zookeeper:
-    quorum: node4,node7,node8
+    quorum: node2,node3,node4
     port: 2181
   hbase:
-    master: node3:600000
+    master: node2:600000

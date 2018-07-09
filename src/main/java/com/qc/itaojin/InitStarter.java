@@ -1,7 +1,6 @@
 package com.qc.itaojin;
 
 import com.qc.itaojin.common.Constants;
-import com.qc.itaojin.common.GloableShare;
 import com.qc.itaojin.service.IAliyunService;
 import com.qc.itaojin.service.IHiveSQLService;
 import com.qc.itaojin.service.IInitHiveService;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static com.qc.itaojin.ImportDataApplication.SCHEMA;
 import static com.qc.itaojin.common.GloableShare.DB_INFO;
 
 /**
@@ -97,7 +97,7 @@ public class InitStarter {
 
     private String buildSchema(String schema){
         StringBuilder nameSpace = new StringBuilder();
-        nameSpace.append(Constants.SCHEMA)
+        nameSpace.append(SCHEMA)
                 .append("000")
                 .append(schema);
 
