@@ -12,12 +12,12 @@ public class ImportDataApplication {
     /**
      * 物理schema
      * */
-    public static final String SCHEMA = BizType.TJK.code();
+    public static final String SCHEMA = BizType.PAY.code();
 
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(ImportDataApplication.class);
-        springApplication.addListeners(new InitListener());
-//        springApplication.addListeners(new ImportListener());
+//        springApplication.addListeners(new InitListener());
+        springApplication.addListeners(new ImportListener());
         springApplication.run(args);
     }
 }
